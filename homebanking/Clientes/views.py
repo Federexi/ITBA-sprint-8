@@ -1,0 +1,33 @@
+from django.shortcuts import render
+from .models import Cliente
+from .serializers import ClienteSerializer,CuentaSerializer,PrestamoSerializer
+from Cuentas.models import Cuenta
+from Prestamos.models import Prestamo
+from rest_framework import viewsets
+
+
+def index (request):
+    return render (request, 'Clientes/template/Clientes/inicio.html')
+
+class ClienteViewSet(viewsets.mixins.ListModelMixin,viewsets.mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    pagination_class = None
+    serializer_class = ClienteSerializer
+    def get_queryset(self):
+        id = self.request.user.id
+        return Cliente.objects.filter(user_id = id)
+
+class CuentaViewSet(viewsets.mixins.ListModelMixin,viewsets.mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    serializer_class = CuentaSerializer
+    def get_queryset(self):
+        id = self.request.user.id
+        cliente = Cliente.objects.filter(user_id = id)
+        cl_id = cliente[0].customer_id
+        return Cuenta.objects.filter(customer_id = cl_id)
+
+class PrestamoViewSet(viewsets.mixins.ListModelMixin,viewsets.mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    serializer_class = PrestamoSerializer
+    def get_queryset(self):
+        id = self.request.user.id
+        cliente = Cliente.objects.filter(user_id = id)
+        cl_id = cliente[0].customer_id
+        return Prestamo.objects.filter(customer_id = cl_id)
