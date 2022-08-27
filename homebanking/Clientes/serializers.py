@@ -5,6 +5,7 @@ from .models import Cliente,TipoCliente
 from django.contrib.auth.models import User
 from Cuentas.models import Cuenta
 from Prestamos.models import Prestamo
+from Tarjetas.models import Tarjeta
 
 class TipoClienteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -41,3 +42,8 @@ class SucursalesSerializer(serializers.ModelSerializer):
         fields = "__all__"        
 
 
+class TarjetaSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Tarjeta
+        fields = '__all__'

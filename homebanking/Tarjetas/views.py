@@ -32,17 +32,4 @@ def index3 (request):
 
 
 
-""" class TarjetasViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = TarjetaSerializer
-    def get_queryset(self):
-        id = self.request.user.id
-        empleado = Empleado.objects.filter(user_id = id)
-        tarjeta_id = empleado[0].branch_id
-        lista_clientes = Cliente.objects.filter(branch_id = tarjeta_id)
-        lista = []
-        tarjetas = Tarjeta.objects.all()
-        for p in tarjetas:
-            for c in lista_clientes:
-                if p.customer_id == c.customer_id:
-                    lista.append(p) 
-        return lista """
+

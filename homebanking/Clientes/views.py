@@ -1,13 +1,15 @@
 from django.shortcuts import render
-from .models import Cliente
-from .serializers import ClienteSerializer,CuentaSerializer,PrestamoSerializer,SucursalesSerializer
+from .models import Cliente, Empleado
+from .serializers import ClienteSerializer,CuentaSerializer,PrestamoSerializer,SucursalesSerializer,TarjetaSerializer
 from Cuentas.models import Cuenta
 from Prestamos.models import Prestamo
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from Prestamos.models import Sucursal
+from Tarjetas.models import Tarjeta
 from rest_framework import status 
+from rest_framework.permissions import IsAdminUser
 
 def index (request):
     return render (request, 'Clientes/template/Clientes/inicio.html')
@@ -52,3 +54,20 @@ class PublicEndpoint(APIView):
         sucursales = Sucursal.objects.all()
         serializer = SucursalesSerializer(sucursales, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class TarjetasViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsAdminUser]
+    serializer_class = TarjetaSerializer
+    def get_queryset(self):
+        id = self.request.user.id
+        empleado = Empleado.objects.filter(user_id = id)
+        cliente_id = empleado[0].branch_id
+        lista_clientes = Cliente.objects.filter(branch_id = cliente_id)
+        lista = []
+        tarjetas = Tarjeta.objects.all()
+        for p in tarjetas:
+            for c in lista_clientes:
+                if p.customer_id == c.customer_id:
+                    lista.append(p) 
+        return lista 
