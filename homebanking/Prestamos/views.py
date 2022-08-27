@@ -11,6 +11,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from datetime import datetime
 from django.db import connection
+from .models import Prestamo
+from Clientes.models import Empleado
+from .serializers import SucursalSerializer
+from rest_framework import viewsets
 
 
 @method_decorator(login_required, name='dispatch')
@@ -80,3 +84,23 @@ class LoanRequest(generic.CreateView):
         except:
             form.add_error(field = None, error = 'Un empleado no puede solicitar un préstamo')
             return self.form_invalid(form)
+
+
+
+
+class SucursalViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = SucursalSerializer
+    def get_queryset(self):
+        id = self.request.user.id
+        empleado = Empleado.objects.filter(user_id = id)
+        sucursal_id = empleado[0].branch_id
+        lista_clientes = Cliente.objects.filter(branch_id = sucursal_id)
+        lista = []
+        prestamos = Prestamo.objects.all()
+        for p in prestamos:
+            for c in lista_clientes:
+                if p.customer_id == c.customer_id:
+                    lista.append(p) 
+        return lista 
+
+

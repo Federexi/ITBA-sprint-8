@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from Prestamos.models import Sucursal
 from .models import Cliente,TipoCliente
 from django.contrib.auth.models import User
 from Cuentas.models import Cuenta
@@ -31,3 +33,11 @@ class PrestamoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Prestamo
         fields = ['loan_id', 'loan_type', 'loan_total']
+
+
+class SucursalesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sucursal
+        fields = "__all__"        
+
+

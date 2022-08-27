@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from .models import Cliente
-from .serializers import ClienteSerializer,CuentaSerializer,PrestamoSerializer
+from .serializers import ClienteSerializer,CuentaSerializer,PrestamoSerializer,SucursalesSerializer
 from Cuentas.models import Cuenta
 from Prestamos.models import Prestamo
 from rest_framework import viewsets
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from Prestamos.models import Sucursal
+from rest_framework import status 
 
 def index (request):
     return render (request, 'Clientes/template/Clientes/inicio.html')
@@ -39,3 +42,13 @@ class PrestamoViewSet(viewsets.mixins.ListModelMixin,viewsets.mixins.RetrieveMod
         except:
             prestamos = []
             return prestamos
+
+
+class PublicEndpoint(APIView):
+
+    permission_classes = []
+
+    def get(self, request):
+        sucursales = Sucursal.objects.all()
+        serializer = SucursalesSerializer(sucursales, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)            

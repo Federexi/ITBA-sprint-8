@@ -13,3 +13,17 @@ class Prestamo(models.Model):
 
     class Meta:
         db_table = 'prestamo'
+
+
+class Sucursal(models.Model):
+    branch_id = models.AutoField(primary_key=True)
+    branch_number = models.BinaryField()
+    branch_name = models.TextField()
+    branch_address_id = models.IntegerField()
+    employee_amnt_per_client = models.FloatField()
+    given_credit_cards = models.IntegerField()
+    given_dedit_cards = models.IntegerField()
+    average_given_loans = models.TextField()
+
+    class Meta:
+        db_table = 'sucursal'        
