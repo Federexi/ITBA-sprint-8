@@ -46,10 +46,18 @@
                   {% csrf_token %}
                   <table>
                     {%for field in form%}
+                      {% if field.label == 'Apellidos' %}
+                      <div class="formutxt">    
+                        <label for="{{field.label}}" class="label marglog">Categoría: Cliente/Empleado</label>
+                         <div class="marglog2 llamoinput">{{field}}</div>
+                      </div>
+                      {% endif %}
+                      {% if field.label != 'Apellidos' %}
                       <div class="formutxt">    
                         <label for="{{field.label}}" class="label marglog">{{field.label}}:</label>
                          <div class="marglog2 llamoinput">{{field}}</div>
                       </div>
+                      {% endif %} 
                     {%for error in field.errors%}
                       <p class="alert alert-danger formutxt">{{error}}</p>
                     {%endfor%}

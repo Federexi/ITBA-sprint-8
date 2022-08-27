@@ -17,25 +17,29 @@ from rest_framework import viewsets
 
 @login_required
 def act (request):
-    datacliente = Cliente.objects.get(user_id = request.user.id)
     try:
-        datacuenta = Cuenta.objects.filter(customer_id = datacliente.customer_id)
-        largodatacuenta = len(Cuenta.objects.filter(customer_id = datacliente.customer_id))
-    except:
-        datacuenta = None
-    
-    if largodatacuenta <= 1:
+        datacliente = Cliente.objects.get(user_id = request.user.id)
         try:
-            datamovimientos = [Movimientos.objects.filter(no_account = datacuenta[0].account_id)]
+            datacuenta = Cuenta.objects.filter(customer_id = datacliente.customer_id)
+            largodatacuenta = len(Cuenta.objects.filter(customer_id = datacliente.customer_id))
         except:
-            datamovimientos = None
-    else:
-        datamovimientos = []
-        for c in datacuenta:
-            x = Movimientos.objects.filter(no_account = c.account_id)
-            datamovimientos.append(x)
+            datacuenta = None
+        
+        if largodatacuenta <= 1:
+            try:
+                datamovimientos = [Movimientos.objects.filter(no_account = datacuenta[0].account_id)]
+            except:
+                datamovimientos = None
+        else:
+            datamovimientos = []
+            for c in datacuenta:
+                x = Movimientos.objects.filter(no_account = c.account_id)
+                datamovimientos.append(x)
 
-    return render (request, 'Cuentas/template/Cuentas/actividad.html', context={'datacliente':datacliente, 'datacuenta':datacuenta, 'datamovimientos':datamovimientos, 'largodatacuenta': largodatacuenta })
+        return render (request, 'Cuentas/template/Cuentas/actividad.html', context={'datacliente':datacliente, 'datacuenta':datacuenta, 'datamovimientos':datamovimientos, 'largodatacuenta': largodatacuenta })
+
+    except:
+        return render (request, 'Cuentas/template/Cuentas/actividad.html', context={'datacliente':None, 'datacuenta':None, 'datamovimientos':None, 'largodatacuenta': None })
 
 @login_required
 def conf (request):
@@ -43,12 +47,15 @@ def conf (request):
 
 @login_required
 def hub (request):
-    datacliente = Cliente.objects.get(user_id = request.user.id)
     try:
-        datacuenta = Cuenta.objects.filter(customer_id = datacliente.customer_id)
+        datacliente = Cliente.objects.get(user_id = request.user.id)
+        try:
+            datacuenta = Cuenta.objects.filter(customer_id = datacliente.customer_id)
+        except:
+            datacuenta = None
+        return render (request, 'Cuentas/template/Cuentas/hub.html', context={'datacliente':datacliente, 'datacuenta':datacuenta })
     except:
-        datacuenta = None
-    return render (request, 'Cuentas/template/Cuentas/hub.html', context={'datacliente':datacliente, 'datacuenta':datacuenta })
+        return render (request, 'Cuentas/template/Cuentas/hub.html', context={'datacliente':None, 'datacuenta':None })
 
 @login_required
 def inv (request):
@@ -60,9 +67,12 @@ def seg (request):
 
 @login_required
 def transf (request):
-    datacliente = Cliente.objects.get(user_id = request.user.id)
     try:
-        datacuenta = Cuenta.objects.filter(customer_id = datacliente.customer_id)
+        datacliente = Cliente.objects.get(user_id = request.user.id)
+        try:
+            datacuenta = Cuenta.objects.filter(customer_id = datacliente.customer_id)
+        except:
+            datacuenta = None
+        return render (request, 'Cuentas/template/Cuentas/transferencias.html', context={'datacliente':datacliente, 'datacuenta':datacuenta})
     except:
-        datacuenta = None
-    return render (request, 'Cuentas/template/Cuentas/transferencias.html', context={'datacliente':datacliente, 'datacuenta':datacuenta})
+        return render (request, 'Cuentas/template/Cuentas/transferencias.html', context={'datacliente':None, 'datacuenta':None})

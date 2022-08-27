@@ -12,7 +12,7 @@ class TipoClienteSerializer(serializers.HyperlinkedModelSerializer):
 class ClienteSerializer(serializers.HyperlinkedModelSerializer):
     
     customer_type = TipoClienteSerializer()
-    # print(customer_type['cu_type'].value)
+    
 
     class Meta:
         model = Cliente

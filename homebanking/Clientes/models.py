@@ -41,6 +41,7 @@ class Empleado(models.Model):
     employee_hire_date = models.TextField()
     employee_dni = models.TextField(db_column='employee_DNI')  
     branch_id = models.IntegerField()
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         db_table = 'empleado'

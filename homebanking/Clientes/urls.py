@@ -10,5 +10,5 @@ router.register(r'prestamos',views.PrestamoViewSet, basename='pr')
 
 urlpatterns = [
     path('', views.index, name = 'index'),
-    path('api/', include(router.urls)),
+    path('api/', include(router.urls), name = 'api'),
 ]

@@ -20,14 +20,22 @@ class CuentaViewSet(viewsets.mixins.ListModelMixin,viewsets.mixins.RetrieveModel
     serializer_class = CuentaSerializer
     def get_queryset(self):
         id = self.request.user.id
-        cliente = Cliente.objects.filter(user_id = id)
-        cl_id = cliente[0].customer_id
-        return Cuenta.objects.filter(customer_id = cl_id)
+        cliente = Cliente.objects.filter(user_id = id) 
+        try:
+            cl_id = cliente[0].customer_id
+            return Cuenta.objects.filter(customer_id = cl_id)
+        except:
+            cuentas = []
+            return cuentas
 
 class PrestamoViewSet(viewsets.mixins.ListModelMixin,viewsets.mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = PrestamoSerializer
     def get_queryset(self):
         id = self.request.user.id
         cliente = Cliente.objects.filter(user_id = id)
-        cl_id = cliente[0].customer_id
-        return Prestamo.objects.filter(customer_id = cl_id)
+        try:
+            cl_id = cliente[0].customer_id
+            return Prestamo.objects.filter(customer_id = cl_id)
+        except:
+            prestamos = []
+            return prestamos
