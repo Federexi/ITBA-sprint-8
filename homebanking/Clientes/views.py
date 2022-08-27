@@ -45,10 +45,10 @@ class PrestamoViewSet(viewsets.mixins.ListModelMixin,viewsets.mixins.RetrieveMod
 
 
 class PublicEndpoint(APIView):
-
+    
     permission_classes = []
 
     def get(self, request):
         sucursales = Sucursal.objects.all()
         serializer = SucursalesSerializer(sucursales, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)            
+        return Response(serializer.data, status=status.HTTP_200_OK)
