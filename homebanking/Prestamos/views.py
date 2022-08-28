@@ -1,10 +1,11 @@
 from http import client
 from django.shortcuts import render
-from Clientes.models import Cliente
+from Clientes.models import Cliente, Direccion
 from Cuentas.models import Cuenta
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView
 from django.views import generic
+from Clientes.serializers import DireccionesSerializer, MiDireccionSerializer
 from .forms import LoanForm
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -118,3 +119,23 @@ class SolicitudPrestamoViewSet(viewsets.ModelViewSet):
         prestamos = Prestamo.objects.all()
         serializer = SucursalSerializer(prestamos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class ModificarDireccionesViewSet(viewsets.mixins.ListModelMixin,viewsets.mixins.RetrieveModelMixin, viewsets.mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    permission_classes = [IsAdminUser]
+    serializer_class = DireccionesSerializer
+    queryset = Direccion.objects.all()
+
+
+class ModificarMiDireccionViewSet(viewsets.mixins.ListModelMixin, viewsets.mixins.RetrieveModelMixin, viewsets.mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    serializer_class = MiDireccionSerializer
+    
+    def get_queryset(self):
+        id = self.request.user.id
+        cliente = Cliente.objects.filter(user_id = id) 
+        try:
+            cl_id = cliente[0].customer_id
+            return Direccion.objects.filter(customer = cl_id)
+        except:
+            direcciones = []
+            return direcciones
+            

@@ -52,3 +52,8 @@ class DireccionesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Direccion
         fields = "__all__"    
+
+class MiDireccionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Direccion
+        fields = ['address_id', 'address', 'postal_zip', 'city', 'state', 'country']

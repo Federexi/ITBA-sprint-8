@@ -80,3 +80,8 @@ class PublicEndpoint2(APIView):
         direcciones = Direccion.objects.all()
         serializer = DireccionesSerializer(direcciones, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class ModificarBalanceViewSet(viewsets.mixins.ListModelMixin, viewsets.mixins.RetrieveModelMixin, viewsets.mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    permission_classes = [IsAdminUser]
+    serializer_class = CuentaSerializer
+    queryset = Cuenta.objects.all()
