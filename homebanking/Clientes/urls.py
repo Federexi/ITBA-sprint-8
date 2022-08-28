@@ -4,7 +4,7 @@ from django.urls import path, include
 from . import views
 from Prestamos.views import SucursalViewSet
 from rest_framework.routers import DefaultRouter
-from .views import PublicEndpoint
+from .views import PublicEndpoint,PublicEndpoint2
 
 router = DefaultRouter()
 router.register(r'Informacion del cliente',views.ClienteViewSet, basename='cl')
@@ -17,4 +17,5 @@ urlpatterns = [
     path('', views.index, name = 'index'),
     path('api/', include(router.urls), name = 'api'),
     path('api/sucursales/',PublicEndpoint.as_view()),
+    path('api/direcciones/',PublicEndpoint2.as_view()),
 ]

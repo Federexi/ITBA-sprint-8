@@ -1,6 +1,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from Prestamos.models import Sucursal
 
 class TipoCliente(models.Model):
     customer_id = models.AutoField(primary_key=True)
@@ -45,3 +46,18 @@ class Empleado(models.Model):
 
     class Meta:
         db_table = 'empleado'
+
+
+class Direccion(models.Model):
+    address_id = models.AutoField(primary_key=True)
+    address = models.TextField()
+    postal_zip = models.TextField()
+    city = models.TextField()
+    state = models.TextField()
+    country = models.TextField()
+    branch = models.ForeignKey(Sucursal,  on_delete=models.CASCADE, blank=True, null=True)
+    customer = models.ForeignKey(Cliente,  on_delete=models.CASCADE, blank=True, null=True)
+    employee = models.ForeignKey(Empleado,  on_delete=models.CASCADE, blank=True, null=True)
+
+    class Meta:
+        db_table = 'direccion'

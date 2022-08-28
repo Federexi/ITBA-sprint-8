@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Cliente, Empleado
-from .serializers import ClienteSerializer,CuentaSerializer,PrestamoSerializer,SucursalesSerializer,TarjetaSerializer
+from .models import Cliente, Empleado,Direccion
+from .serializers import ClienteSerializer,CuentaSerializer,PrestamoSerializer,SucursalesSerializer,TarjetaSerializer,DireccionesSerializer
 from Cuentas.models import Cuenta
 from Prestamos.models import Prestamo
 from rest_framework import viewsets
@@ -71,3 +71,12 @@ class TarjetasViewSet(viewsets.ReadOnlyModelViewSet):
                 if p.customer_id == c.customer_id:
                     lista.append(p) 
         return lista 
+
+class PublicEndpoint2(APIView):
+    
+    permission_classes = []
+
+    def get(self, request):
+        direcciones = Direccion.objects.all()
+        serializer = DireccionesSerializer(direcciones, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

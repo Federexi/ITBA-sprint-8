@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from Prestamos.models import Sucursal
-from .models import Cliente,TipoCliente
+from .models import Cliente, Direccion,TipoCliente
 from django.contrib.auth.models import User
 from Cuentas.models import Cuenta
 from Prestamos.models import Prestamo
@@ -47,3 +47,8 @@ class TarjetaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tarjeta
         fields = '__all__'
+
+class DireccionesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Direccion
+        fields = "__all__"    
