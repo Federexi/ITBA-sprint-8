@@ -16,6 +16,8 @@ from Clientes.models import Empleado
 from .serializers import SucursalSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+from rest_framework import viewsets, status
 
 
 @method_decorator(login_required, name='dispatch')
@@ -106,3 +108,13 @@ class SucursalViewSet(viewsets.ReadOnlyModelViewSet):
         return lista 
 
 
+class SolicitudPrestamoViewSet(viewsets.ModelViewSet): 
+    permission_classes = [IsAdminUser]
+    serializer_class = SucursalSerializer
+    queryset = Prestamo.objects.all()
+    lookup_field = 'loan_id'
+
+    def get(self, request, format=None):
+        prestamos = Prestamo.objects.all()
+        serializer = SucursalSerializer(prestamos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
