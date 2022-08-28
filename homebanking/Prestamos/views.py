@@ -132,10 +132,6 @@ class ModificarMiDireccionViewSet(viewsets.mixins.ListModelMixin, viewsets.mixin
     def get_queryset(self):
         id = self.request.user.id
         cliente = Cliente.objects.filter(user_id = id) 
-        try:
-            cl_id = cliente[0].customer_id
-            return Direccion.objects.filter(customer = cl_id)
-        except:
-            direcciones = []
-            return direcciones
+        cl_id = cliente[0].customer_id
+        return Direccion.objects.filter(customer = cl_id)
             
