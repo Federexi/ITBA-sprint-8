@@ -2,9 +2,6 @@ from django.shortcuts import render
 from Clientes.models import Cliente
 from Cuentas.models import Cuenta
 from .models import Tarjeta
-""" from .serializers import TarjetaSerializer
-from rest_framework import viewsets
-from Clientes.models import Empleado """
 
 
 def index3 (request):

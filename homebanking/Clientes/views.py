@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Cliente, Empleado,Direccion
-from .serializers import ClienteSerializer,CuentaSerializer,PrestamoSerializer,SucursalesSerializer,TarjetaSerializer,DireccionesSerializer
+from .serializers import ClienteSerializer,CuentaSerializer,PrestamoSerializer,SucursalesSerializer,TarjetaSerializer,DireccionesSerializer, ClientesSerializer
 from Cuentas.models import Cuenta
 from Prestamos.models import Prestamo
 from rest_framework import viewsets
@@ -56,21 +56,20 @@ class PublicEndpoint(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class TarjetasViewSet(viewsets.ReadOnlyModelViewSet):
+class ClientesViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Cliente.objects.all()
+    serializer_class = ClienteSerializer
     permission_classes = [IsAdminUser]
+
+
+class TarjetasViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset=Tarjeta.objects.all()
     serializer_class = TarjetaSerializer
-    def get_queryset(self):
-        id = self.request.user.id
-        empleado = Empleado.objects.filter(user_id = id)
-        cliente_id = empleado[0].branch_id
-        lista_clientes = Cliente.objects.filter(branch_id = cliente_id)
-        lista = []
-        tarjetas = Tarjeta.objects.all()
-        for p in tarjetas:
-            for c in lista_clientes:
-                if p.customer_id == c.customer_id:
-                    lista.append(p) 
-        return lista 
+    permission_classes = [IsAdminUser]
+    lookup_field = 'customer_id'
+    
+    
+                
 
 class PublicEndpoint2(APIView):
     

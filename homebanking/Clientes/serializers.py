@@ -42,11 +42,19 @@ class SucursalesSerializer(serializers.ModelSerializer):
         fields = "__all__"        
 
 
-class TarjetaSerializer(serializers.HyperlinkedModelSerializer):
+class ClientesSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Cliente
+        fields = ['customer_id','customer_name', 'customer_surname']  
 
+
+class TarjetaSerializer(serializers.ModelSerializer):
+    customer_id = serializers.ReadOnlyField(source='customer_id.customer_id')
     class Meta:
         model = Tarjeta
-        fields = '__all__'
+        fields = ['customer_id','card_id','card_type','card_number', 'cvv', ]  
+
 
 class DireccionesSerializer(serializers.ModelSerializer):
     class Meta:
