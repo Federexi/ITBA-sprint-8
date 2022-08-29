@@ -61,24 +61,14 @@ class ClientesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ClienteSerializer
     permission_classes = [IsAdminUser]
 
-
+                
 class TarjetasViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset=Tarjeta.objects.all()
     serializer_class = TarjetaSerializer
     permission_classes = [IsAdminUser]
     lookup_field = 'customer_id'
-    
-    
-                
-
-class PublicEndpoint2(APIView):
-    
-    permission_classes = []
-
-    def get(self, request):
-        direcciones = Direccion.objects.all()
-        serializer = DireccionesSerializer(direcciones, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        id = self.kwargs['id']
+        return Tarjeta.objects.filter(customer_id = id)
 
 class ModificarBalanceViewSet(viewsets.mixins.ListModelMixin, viewsets.mixins.RetrieveModelMixin, viewsets.mixins.UpdateModelMixin, viewsets.GenericViewSet):
     permission_classes = [IsAdminUser]

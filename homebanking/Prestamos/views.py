@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from datetime import datetime
 from django.db import connection
-from .models import Prestamo
+from .models import Prestamo, Sucursal
 from Clientes.models import Empleado
 from .serializers import SucursalSerializer
 from rest_framework import viewsets
@@ -90,16 +90,12 @@ class LoanRequest(generic.CreateView):
             return self.form_invalid(form)
 
 
-
-
 class SucursalViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = SucursalSerializer
     def get_queryset(self):
-        id = self.request.user.id
-        empleado = Empleado.objects.filter(user_id = id)
-        sucursal_id = empleado[0].branch_id
-        lista_clientes = Cliente.objects.filter(branch_id = sucursal_id)
+        id = self.kwargs['id']
+        lista_clientes = Cliente.objects.filter(branch_id = id)
         lista = []
         prestamos = Prestamo.objects.all()
         for p in prestamos:
@@ -107,7 +103,6 @@ class SucursalViewSet(viewsets.ReadOnlyModelViewSet):
                 if p.customer_id == c.customer_id:
                     lista.append(p) 
         return lista 
-
 
 class SolicitudPrestamoViewSet(viewsets.ModelViewSet): 
     permission_classes = [IsAdminUser]
@@ -132,6 +127,10 @@ class ModificarMiDireccionViewSet(viewsets.mixins.ListModelMixin, viewsets.mixin
     def get_queryset(self):
         id = self.request.user.id
         cliente = Cliente.objects.filter(user_id = id) 
-        cl_id = cliente[0].customer_id
-        return Direccion.objects.filter(customer = cl_id)
+        try:
+            cl_id = cliente[0].customer_id
+            return Direccion.objects.filter(customer = cl_id)
+        except:
+            direcciones = []
+            return direcciones
             

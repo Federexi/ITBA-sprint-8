@@ -34,6 +34,18 @@ $ cd homebanking
 * Activar el servidor:
 $ python3 manage.py runserver
 
+* Acceder a la api:
+http://127.0.0.1:8000/api/
+
+* Acceder a los prestamos de una sucursal:
+http://127.0.0.1:8000/api/prestamos_por_sucursal/(id de la sucursal deseada)
+
+* Acceder a las tarjetas de un cliente:
+http://127.0.0.1:8000/api/tarjetas/(id de cliente deseado)
+
+* Acceder al listado publico de sucursales:
+http://127.0.0.1:8000/api/sucursales/
+
 ## Grupo 3
 
 * Integrantes: Agustín Nahuel Bloise, Diego Ezequiel Benítez y Federico Bidarra.
